@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
 import TestUI from './components/test-ui';
+import TestUIObjectState from './components/test-ui-object-state';
 
 // Component -> farklı yerlerde tekrar tekrar kullanılabilir ui bileşenleridir.
 // React componentleri büyük harfle başlar.
@@ -24,7 +22,7 @@ function App() {
 	// Stateler componentlerin durumunu tutan yapılardır.
 	// function componentlerd euseState hook'u ile state tanımlanır.
 	// useState bir array döner. İlk eleman state, ikinci eleman state'i güncelleyen fonksiyondur.
-	const [count, setCount] = useState(0); // 0 component için durum değişkenin başlangıç değeri.
+	// const [count, setCount] = useState(0); // 0 component için durum değişkenin başlangıç değeri.
 	// setCount fonksiyonu ile count state'ini güncelleyebiliriz.
 	// count ise state'in kendisidir.
 	// Hook -> React fonksiyonel componentlerinde yan etkileri yönetmek için kullanılır.
@@ -33,7 +31,7 @@ function App() {
 	console.log('rending...');
 	return (
 		<>
-			<div>
+			{/* <div>
 				<a href="https://vite.dev" target="_blank">
 					<img src={viteLogo} className="logo" alt="Vite logo" />
 				</a>
@@ -41,11 +39,16 @@ function App() {
 					<img src={reactLogo} className="logo react" alt="React logo" />
 				</a>
 			</div>
-			<h1>Vite + React12</h1>
+			<h1>Vite + React12</h1> */}
 
 			{/* custom field */}
-			<TestUI />
 
+			<h1>Sample 1</h1>
+			<TestUI />
+			<hr></hr>
+			<h1>Sample 2</h1>
+			<TestUIObjectState />
+			{/* 
 			<div className="card">
 				<button onClick={() => setCount((count) => count + 1)}>
 					count is {count}
@@ -56,7 +59,7 @@ function App() {
 			</div>
 			<p className="read-the-docs">
 				Click on the Vite and React logos to learn more
-			</p>
+			</p> */}
 		</>
 	);
 }
