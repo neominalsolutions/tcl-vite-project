@@ -1,8 +1,7 @@
 import React from 'react';
 import './App.css';
 import GridUI from './components/grid-ui';
-import TestUI from './components/test-ui';
-import TestUIObjectState from './components/test-ui-object-state';
+import ButtonUI from './components/button.ui';
 
 // Component -> farklı yerlerde tekrar tekrar kullanılabilir ui bileşenleridir.
 // React componentleri büyük harfle başlar.
@@ -65,6 +64,14 @@ function App() {
 				}}
 			/>
 			<hr></hr>
+
+			<ButtonUI
+				title="Click Me"
+				onBttnClick={() => {
+					console.log('ButtonUI den event alındı');
+				}}
+			/>
+
 			{/* 
 			<div className="card">
 				<button onClick={() => setCount((count) => count + 1)}>
