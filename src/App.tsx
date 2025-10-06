@@ -1,4 +1,6 @@
+import React from 'react';
 import './App.css';
+import GridUI from './components/grid-ui';
 import TestUI from './components/test-ui';
 import TestUIObjectState from './components/test-ui-object-state';
 
@@ -28,6 +30,8 @@ function App() {
 	// Hook -> React fonksiyonel componentlerinde yan etkileri yönetmek için kullanılır.
 	// Kanca  -> Web uygulamalarında belirli olaylara tepki vermek için kullanılan yapılar.
 
+	const [_pageSize, _setPageSize] = React.useState(10); // initial pageSize değeri default 10
+
 	console.log('rending...');
 	return (
 		<>
@@ -43,11 +47,24 @@ function App() {
 
 			{/* custom field */}
 
-			<h1>Sample 1</h1>
+			{/* <h1>Sample 1</h1>
 			<TestUI />
 			<hr></hr>
 			<h1>Sample 2</h1>
 			<TestUIObjectState />
+			<hr></hr> */}
+			<h1>Sample 3</h1>
+			<p>Güncel Page Size: {_pageSize}</p>
+			<hr></hr>
+			<GridUI
+				pageSize={_pageSize}
+				onPageSize={(value: number) => {
+					// func
+					_setPageSize(value);
+					// console.log('App Component New Page Size:', value);
+				}}
+			/>
+			<hr></hr>
 			{/* 
 			<div className="card">
 				<button onClick={() => setCount((count) => count + 1)}>
