@@ -9,7 +9,12 @@ export interface User {
 
 // componenten buradaki export edilen getUsers fonksiyonu çağrılır.
 const getUsers = async (): Promise<User[]> => {
-	return axiosClientService.get('/users');
+	console.log('User Client Service: Getting users...');
+	return axiosClientService.get(
+		'/users',
+		{ headers: { Authorization: 'Bearer xtuyuyuad.asdsad.asdsadsad' } },
+		300
+	); // 7 sn timeout
 };
 
 export const userClientService = {
