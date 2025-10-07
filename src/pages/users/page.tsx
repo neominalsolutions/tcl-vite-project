@@ -1,5 +1,8 @@
 // axios paketi yüklüyoruz.
 
+
+// Not: Error Boundry -> Sayfada veri çekilirken hata olursa ekranın çökmesini engellemek için kullanılır.
+
 import { useEffect, useState } from 'react';
 import { userClientService, type User } from '../../services/users/user.client';
 
