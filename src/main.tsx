@@ -11,6 +11,7 @@ import { lazy } from 'react';
 const HomePage = lazy(() => import('./pages/home/page'));
 const AboutPage = lazy(() => import('./pages/about/page'));
 const UsersPage = lazy(() => import('./pages/users/page'));
+const UserDetailPage = lazy(() => import('./pages/users/[id]/page.tsx'));
 // index:true anasayfa tanımı MainLayout için ilk açılış sayfası HomePage
 const router = createBrowserRouter([
 	{
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
 			{ index: true, Component: HomePage },
 			{ path: 'about', Component: AboutPage },
 			{ path: 'users', Component: UsersPage },
+			{ path: 'users/:id', Component: UserDetailPage },
 		],
 	},
 ]);
