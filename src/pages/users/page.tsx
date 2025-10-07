@@ -27,8 +27,6 @@ function UsersPage() {
 			})}
 		</div>
 	);
-
-	return <div>Users Count: {users.length}</div>;
 }
 
 export default UsersPage;
