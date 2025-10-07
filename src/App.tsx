@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import GridUI from './components/grid-ui';
 import ButtonUI from './components/button.ui';
 

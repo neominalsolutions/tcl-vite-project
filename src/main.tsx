@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import './index.css';
 import MainLayout from './layouts/main.layout.tsx';
+import '@fontsource/roboto/400.css';
 // import AboutPage from './pages/about/page.tsx';
 // import HomePage from './pages/home/page.tsx';
 import { lazy } from 'react';
