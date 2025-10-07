@@ -1,5 +1,8 @@
 import { axiosClientService } from '../axios.client';
 
+// Not: Page Cpomponentlere çekilen verilerin ekrandaki componentlere bind edilmesi için, kolay yazım açısında API deki her bir DTO Objesi için bir interface tanımlanır.
+
+// API dan veri çekeceksek en doğru interface i tanımlayalım.
 export interface User {
 	id: number;
 	name: string;
@@ -8,12 +11,12 @@ export interface User {
 }
 
 // componenten buradaki export edilen getUsers fonksiyonu çağrılır.
-const getUsers = async (): Promise<User[]> => {
+const getUsers = async () => {
 	console.log('User Client Service: Getting users...');
 	return axiosClientService.get(
 		'/users',
 		{ headers: { Authorization: 'Bearer xtuyuyuad.asdsad.asdsadsad' } },
-		300
+		3000
 	); // 7 sn timeout
 };
 

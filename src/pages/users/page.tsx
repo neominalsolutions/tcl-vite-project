@@ -20,6 +20,14 @@ function UsersPage() {
 		loadUsers();
 	}, []); // [] yazınca sadece component unmount olduğunda (doma girdiğinde) tetiklenir.
 
+	return (
+		<div>
+			{users.map((item: User, index: number) => {
+				return <div key={index}>{item.username}</div>;
+			})}
+		</div>
+	);
+
 	return <div>Users Count: {users.length}</div>;
 }
 

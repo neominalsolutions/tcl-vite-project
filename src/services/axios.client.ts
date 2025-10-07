@@ -93,6 +93,8 @@ axiosClient.interceptors.request.use(
 	(config) => {
 		// request gönderilmeden önce yapılacak işlemler
 		console.log('Request Interceptor:', config);
+		// her bir request de merkezi olarak bu header eklenir
+		config.headers['X-Custom-Header'] = 'CustomHeaderValue'; // örnek custom header ekleme
 		return config;
 	},
 	(error) => {
