@@ -10,7 +10,7 @@ import { lazy } from 'react';
 // nbu sayede uygulamanın ilk açışı hızlanır.
 const HomePage = lazy(() => import('./pages/home/page'));
 const AboutPage = lazy(() => import('./pages/about/page'));
-
+const UsersPage = lazy(() => import('./pages/users/page'));
 // index:true anasayfa tanımı MainLayout için ilk açılış sayfası HomePage
 const router = createBrowserRouter([
 	{
@@ -19,6 +19,7 @@ const router = createBrowserRouter([
 		children: [
 			{ index: true, Component: HomePage },
 			{ path: 'about', Component: AboutPage },
+			{ path: 'users', Component: UsersPage },
 		],
 	},
 ]);

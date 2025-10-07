@@ -23,6 +23,13 @@ function MainLayout() {
 				>
 					About NavLink
 				</NavLink>
+				|{' '}
+				<NavLink
+					to="/users"
+					style={({ isActive }) => ({ color: isActive ? 'red' : 'blue' })}
+				>
+					Users NavLink
+				</NavLink>
 			</nav>
 			<main style={{ padding: '20px', minHeight: '80vh' }}>
 				{/* Main content goes here */}
