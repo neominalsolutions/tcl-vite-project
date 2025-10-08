@@ -9,13 +9,13 @@ import {
 	Toolbar,
 	Typography,
 } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router';
 import LoginDialog from '../components/login.dialog';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../contexts/store';
 import { authService } from '../services/login/auth.client';
-import { signOut } from '../contexts/userState/user.slice';
+import { reloadSession, signOut } from '../contexts/userState/user.slice';
 
 // Not: Link genelde bir sayfadan diğerine geçiş yapmak için kullanılır.
 // NavLink ise aktif olan linki belirtmek için kullanılır.
@@ -25,6 +25,11 @@ function MainLayout() {
 	const [visibleDialog, setVisibleDialog] = useState<boolean>(false);
 	const [menuVisible, setMenuVisible] = useState<boolean>(false);
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		console.log('her uyggulama reload olduğunda girilen yer');
+		dispatch(reloadSession());
+	}, []);
 
 	// client state erişim sağlıyoruz
 	const userSessionState = useSelector(

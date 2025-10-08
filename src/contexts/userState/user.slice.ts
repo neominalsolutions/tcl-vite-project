@@ -25,6 +25,19 @@ const userSessionSlice = createSlice({
 	name: 'UserSesssion', // STatelerin içindeki actionları tetil bir isie bağlıyoruz
 	initialState: initState, // default ilk değerimiz
 	reducers: {
+		reloadSession: (state: UserSessionState) => {
+			const sessionPersist = localStorage.getItem('user-session-persist');
+
+			if (sessionPersist) {
+				const sessionPersistObject = JSON.parse(sessionPersist);
+
+				state.authenticated = sessionPersistObject.authenticated;
+				state.permissions = sessionPersistObject.permissions;
+				state.roles = sessionPersistObject.roles;
+				state.token = sessionPersistObject.token;
+				state.username = sessionPersistObject.username;
+			}
+		},
 		signIn: (
 			state: UserSessionState,
 			action: PayloadAction<UserSessionState>
@@ -36,6 +49,8 @@ const userSessionSlice = createSlice({
 			state.token = action.payload.token;
 			state.roles = action.payload.roles;
 			state.username = action.payload.username;
+			// persist session oluştur.
+			localStorage.setItem('user-session-persist', JSON.stringify(state));
 		},
 		signOut: (state: UserSessionState) => {
 			state.authenticated = false;
@@ -43,10 +58,12 @@ const userSessionSlice = createSlice({
 			state.permissions = [];
 			state.token = '';
 			state.roles = [];
+			// persist session temizle
+			localStorage.removeItem('user-session-persist');
 		},
 	},
 });
 
 // yukarıdaki tanımı actiponlaro sayfalardan tetiklemek için export et
-export const { signIn, signOut } = userSessionSlice.actions;
+export const { signIn, signOut, reloadSession } = userSessionSlice.actions;
 export const userSessionReducer = userSessionSlice.reducer; // state takibi yapıp state güncelleyen özel functionlar.
