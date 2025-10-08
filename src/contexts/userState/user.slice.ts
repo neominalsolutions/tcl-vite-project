@@ -29,8 +29,13 @@ const userSessionSlice = createSlice({
 			state: UserSessionState,
 			action: PayloadAction<UserSessionState>
 		) => {
+			console.log('signIn', action.payload);
 			// payload güncel state değeri olduğundan direk state payload gelen kod ile güncelledik.
-			state = action.payload;
+			state.authenticated = action.payload.authenticated;
+			state.permissions = action.payload.permissions;
+			state.token = action.payload.token;
+			state.roles = action.payload.roles;
+			state.username = action.payload.username;
 		},
 		signOut: (state: UserSessionState) => {
 			state.authenticated = false;

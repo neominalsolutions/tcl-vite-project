@@ -4,12 +4,16 @@ import {
 	Button,
 	Container,
 	Grid,
+	MenuItem,
+	Menu,
 	Toolbar,
 	Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import LoginDialog from '../components/login.dialog';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../contexts/store';
 
 // Not: Link genelde bir sayfadan diğerine geçiş yapmak için kullanılır.
 // NavLink ise aktif olan linki belirtmek için kullanılır.
@@ -17,10 +21,20 @@ import LoginDialog from '../components/login.dialog';
 
 function MainLayout() {
 	const [visibleDialog, setVisibleDialog] = useState<boolean>(false);
+	const [menuVisible, setMenuVisible] = useState<boolean>(false);
+
+	// client state erişim sağlıyoruz
+	const userSessionState = useSelector(
+		(rootState: RootState) => rootState.userSessionState
+	);
 
 	const onLoginClick = () => {
 		setVisibleDialog(!visibleDialog);
 	};
+
+	// bazen arayüzde bir elementin referansına başka bir component element ihtiyaç duyarsa bu durumda useRef hook ile bu referans yönetimi yapılır. Hesap menuüsünün üstüne gelince bu menu altında context menu gibi bir açılır menu açtırmak istiyoruz bu durumda bu menu anchorElement olarak-> Hesap butonunun referansını kullanmalı
+	// Senaryo ->
+	const anchorEl = useRef(null);
 
 	return (
 		<Container maxWidth="xl">
@@ -92,9 +106,44 @@ function MainLayout() {
 									</Button>
 								</Box>
 
-								<Button onClick={onLoginClick} color="inherit">
-									Login
-								</Button>
+								<Box sx={{ display: 'flex', justifyContent: 'right' }}>
+									{!userSessionState.authenticated && (
+										<Button onClick={onLoginClick} color="inherit">
+											Login
+										</Button>
+									)}
+
+									{userSessionState.authenticated && (
+										<>
+											<Button
+												ref={anchorEl} // Hesap button UI Referansı
+												onClick={() => setMenuVisible(!menuVisible)}
+												color="inherit"
+											>
+												{userSessionState.username}
+											</Button>
+
+											<Menu
+												anchorEl={() => anchorEl.current} // Hesap button UI Referansada Menu bağla
+												id="basic-menu"
+												open={menuVisible}
+												onClose={() => setMenuVisible(false)}
+												slotProps={{
+													list: {
+														'aria-labelledby': 'basic-button',
+													},
+												}}
+											>
+												<MenuItem onClick={() => setMenuVisible(false)}>
+													Profil
+												</MenuItem>
+												<MenuItem onClick={() => setMenuVisible(false)}>
+													Oturumu Kapat
+												</MenuItem>
+											</Menu>
+										</>
+									)}
+								</Box>
 							</Toolbar>
 						</AppBar>
 					</Box>

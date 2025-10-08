@@ -13,6 +13,8 @@ import {
 	TextField,
 } from '@mui/material';
 import { authService } from '../services/login/auth.client';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../contexts/userState/user.slice';
 
 function LoginDialog({
 	open, // dialog göster yada gizle
@@ -21,6 +23,12 @@ function LoginDialog({
 	open: boolean;
 	handleClose(): void;
 }) {
+	// REDUX
+
+	const dispath = useDispatch();
+
+	// REDUX END
+
 	const loginSchema = yup
 		.object({
 			email: yup
@@ -58,6 +66,21 @@ function LoginDialog({
 			.then((response) => {
 				console.log('response', response);
 				console.log('token', response.data.token);
+				// jwt-decode library decoded edip -> tokendan payload bilgilerini aldık
+
+				const userSession = { // -> token payload simüle ettik
+					authenticated: true,
+					token: response.data.token,
+					username: 'ali',
+					roles: ['admin'],
+					permissions: [{ type: 'User', value: 'Create' }],
+				};
+
+				console.log('userSession', userSession);
+
+				// client session state güncellece
+				// 	const dispath = useDispatch(); -> state güncellemek için dispatch function kullanılır
+				dispath(signIn({ ...userSession }));
 			})
 			.catch((err) => {
 				console.log('err', err);
