@@ -7,13 +7,21 @@ import {
 	Toolbar,
 	Typography,
 } from '@mui/material';
+import { useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
+import LoginDialog from '../components/login.dialog';
 
 // Not: Link genelde bir sayfadan diğerine geçiş yapmak için kullanılır.
 // NavLink ise aktif olan linki belirtmek için kullanılır.
 // Örneğin, kullanıcı "About" sayfasındaysa, "About" linki farklı bir renkte gösterilebilir.
 
 function MainLayout() {
+	const [visibleDialog, setVisibleDialog] = useState<boolean>(false);
+
+	const onLoginClick = () => {
+		setVisibleDialog(!visibleDialog);
+	};
+
 	return (
 		<Container maxWidth="xl">
 			<Grid sx={{ flexGrow: 1 }} container spacing={2}>
@@ -84,7 +92,9 @@ function MainLayout() {
 									</Button>
 								</Box>
 
-								<Button color="inherit">Login</Button>
+								<Button onClick={onLoginClick} color="inherit">
+									Login
+								</Button>
 							</Toolbar>
 						</AppBar>
 					</Box>
@@ -97,6 +107,11 @@ function MainLayout() {
 					</main>
 				</Grid>
 			</Grid>
+
+			<LoginDialog
+				open={visibleDialog}
+				handleClose={() => setVisibleDialog(false)}
+			/>
 
 			<footer>Main Footer</footer>
 		</Container>
