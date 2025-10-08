@@ -8,6 +8,7 @@ export const store = configureStore({
 	reducer: {
 		userSessionState: userSessionReducer, // stateleri yönetmek için reducer tanımı yaparız.
 	},
+	devTools: import.meta.env.MODE !== 'production', // devTools production mode için kullanılmaz. dev ortam için ideal bir çözüm
 });
 
 export type RootState = ReturnType<typeof store.getState>; // uygulamadaki tüm statelere erişiriz.

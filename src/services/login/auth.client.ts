@@ -22,6 +22,23 @@ const login = async ({
 	}); // 7 sn timeout
 };
 
+const logout = async () => {
+	console.log('authServiceService: Logout...');
+
+	// ya böyle bir server hatası alıcaz
+	// return Promise.reject({ message: 'Internal Server Error' });
+
+	// yada path yanlış olucak 404 gibi bir hata alıcaz.
+	return axios.post(
+		'https://reqres.in/api/logout',
+		{}, // params
+		{
+			headers: { 'x-api-key': 'reqres-free-v1' },
+		}
+	); // 7 sn timeout
+};
+
 export const authService = {
 	login,
+	logout,
 };

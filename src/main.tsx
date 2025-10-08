@@ -11,6 +11,8 @@ import UsersLoaderPage from './pages/users-loader/page.tsx';
 import { userClientService } from './services/users/user.client.ts';
 import { Provider } from 'react-redux'; // store daki stateleri uygulama genelinde yöneten servis
 import { store } from './contexts/store.ts'; // provider store ile çalışsın
+import AuthGuard from './guards/auth.guard.tsx';
+import UnAuthorizePage from './pages/auth/page.tsx';
 
 // tembel sayfa yüklemesi arkadan yükleme
 // nbu sayede uygulamanın ilk açışı hızlanır.
@@ -29,7 +31,12 @@ const router = createBrowserRouter([
 			{
 				path: 'users',
 
-				Component: UsersPage,
+				// @PreAuthorize
+				element: (
+					<AuthGuard>
+						<UsersPage />
+					</AuthGuard>
+				),
 			},
 			{
 				path: 'users-loader',
@@ -37,13 +44,21 @@ const router = createBrowserRouter([
 					// sayfa açılmadan önce gidip arka planda veri çekme işlemi başlatıyor
 					return await userClientService.getUsers(); // veri yüklenince sayfaya veriyi useLoaderData hook ile veriyor, bu sayede eğer bu servis hata varsa bu errorBoundary ilgisi haline geliyor.
 				},
-				Component: UsersLoaderPage,
+				element: (
+					<AuthGuard>
+						<UsersLoaderPage />
+					</AuthGuard>
+				),
 				ErrorBoundary: ErrorBoundryPage,
 			},
 			{
 				path: 'users/:id',
 				Component: UserDetailPage,
 				ErrorBoundary: ErrorBoundryPage,
+			},
+			{
+				path: 'unauthorize',
+				Component: UnAuthorizePage,
 			},
 		],
 	},

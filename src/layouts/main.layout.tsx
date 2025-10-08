@@ -10,10 +10,12 @@ import {
 	Typography,
 } from '@mui/material';
 import { useRef, useState } from 'react';
-import { Link, NavLink, Outlet } from 'react-router';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router';
 import LoginDialog from '../components/login.dialog';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../contexts/store';
+import { authService } from '../services/login/auth.client';
+import { signOut } from '../contexts/userState/user.slice';
 
 // Not: Link genelde bir sayfadan diğerine geçiş yapmak için kullanılır.
 // NavLink ise aktif olan linki belirtmek için kullanılır.
@@ -22,6 +24,7 @@ import type { RootState } from '../contexts/store';
 function MainLayout() {
 	const [visibleDialog, setVisibleDialog] = useState<boolean>(false);
 	const [menuVisible, setMenuVisible] = useState<boolean>(false);
+	const dispatch = useDispatch();
 
 	// client state erişim sağlıyoruz
 	const userSessionState = useSelector(
@@ -35,6 +38,20 @@ function MainLayout() {
 	// bazen arayüzde bir elementin referansına başka bir component element ihtiyaç duyarsa bu durumda useRef hook ile bu referans yönetimi yapılır. Hesap menuüsünün üstüne gelince bu menu altında context menu gibi bir açılır menu açtırmak istiyoruz bu durumda bu menu anchorElement olarak-> Hesap butonunun referansını kullanmalı
 	// Senaryo ->
 	const anchorEl = useRef(null);
+	const navigate = useNavigate();
+
+	const onLogOut = () => {
+		authService
+			.logout() // apiden logout
+			.then((response) => {
+				console.log('logout', response);
+				dispatch(signOut()); // session logOut
+				navigate('/'); // anasayfaya yönlendir
+			})
+			.catch((err) => {
+				console.log('err', err);
+			});
+	};
 
 	return (
 		<Container maxWidth="xl">
@@ -84,26 +101,30 @@ function MainLayout() {
 										</NavLink>{' '}
 									</Button>
 
-									<Button color="inherit">
-										<NavLink
-											to="/users"
-											style={({ isActive }) => ({
-												color: isActive ? 'yellow' : 'white',
-												textDecoration: 'none',
-											})}
-										>
-											Users NavLink
-										</NavLink>{' '}
-									</Button>
+									{userSessionState.authenticated && (
+										<>
+											<Button color="inherit">
+												<NavLink
+													to="/users"
+													style={({ isActive }) => ({
+														color: isActive ? 'yellow' : 'white',
+														textDecoration: 'none',
+													})}
+												>
+													Users NavLink
+												</NavLink>{' '}
+											</Button>
 
-									<Button color="inherit">
-										<Link
-											style={{ textDecoration: 'none', color: 'white' }}
-											to="/users-loader"
-										>
-											Users Loader
-										</Link>{' '}
-									</Button>
+											<Button color="inherit">
+												<Link
+													style={{ textDecoration: 'none', color: 'white' }}
+													to="/users-loader"
+												>
+													Users Loader
+												</Link>{' '}
+											</Button>
+										</>
+									)}
 								</Box>
 
 								<Box sx={{ display: 'flex', justifyContent: 'right' }}>
@@ -137,9 +158,7 @@ function MainLayout() {
 												<MenuItem onClick={() => setMenuVisible(false)}>
 													Profil
 												</MenuItem>
-												<MenuItem onClick={() => setMenuVisible(false)}>
-													Oturumu Kapat
-												</MenuItem>
+												<MenuItem onClick={onLogOut}>Oturumu Kapat</MenuItem>
 											</Menu>
 										</>
 									)}
