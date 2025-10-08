@@ -12,6 +12,7 @@ import {
 	Divider,
 	TextField,
 } from '@mui/material';
+import { authService } from '../services/login/auth.client';
 
 function LoginDialog({
 	open, // dialog göster yada gizle
@@ -41,22 +42,32 @@ function LoginDialog({
 	} = useForm({
 		defaultValues: {
 			// -> form ilk değerleri
-			email: '',
-			password: '',
+			email: 'eve.holt@reqres.in',
+			password: '123456789',
 		},
 		resolver: yupResolver(loginSchema), // login şemasını forma uygula
 	});
 
-	const onFormSubmit = (data: any) => {
+	const onFormSubmit = async (data: any) => {
 		// form submit edildikten sonraki form bilgileri
 		console.log(data);
 		handleClose();
+
+		authService
+			.login({ ...data, username: data.email })
+			.then((response) => {
+				console.log('response', response);
+				console.log('token', response.data.token);
+			})
+			.catch((err) => {
+				console.log('err', err);
+			});
 	};
 
 	console.log('...rending');
 
 	// Not: Hook Forms UI kütüphaneleri ile çalışrıken TextInput gibi UI kütüphanelerine ait form elementlerinin state değişikliklerini algılamak için kullanılan bir wrapper component: (Controller)
-    // Not: Formu submit edene kadar inputdaki her değişim için render.
+	// Not: Formu submit edene kadar inputdaki her değişim için render.
 
 	return (
 		<Dialog
