@@ -9,6 +9,7 @@ import {
 	Card,
 	CardActions,
 	CardContent,
+	CircularProgress,
 	Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -22,15 +23,20 @@ import FallbackError from '../../components/fallback.error';
 function UsersPage() {
 	const [users, setUsers] = useState<User[]>([]);
 	const [errorState, setErrorState] = useState<any>(); // global olarak da yönetibiliyor.
+	const [loading, setLoading] = useState<boolean>(false);
+
 	// manuel olarak fallback component oluşturma yapmamız gerekiyor
 
 	// kullanıcıları getiren fonksiyon
 	const loadUsers = async () => {
 		try {
+			setLoading(true);
 			const data = await userClientService.getUsers();
 			setUsers(data); // ekran state hazır hale getirdik
+			setLoading(false);
 		} catch (error) {
 			setErrorState(error);
+			setLoading(false);
 		}
 	};
 
@@ -49,6 +55,15 @@ function UsersPage() {
 
 	// Not: Genelde Success işlemleri sonrasında sayfanın yönlendirilmesi yada Login sonrası sayfa yönledirme gibi durumlarda ise useNavigate hook kullanırız.
 	const navigate = useNavigate();
+
+	if (loading)
+		return (
+			<Box
+				sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+			>
+				<CircularProgress color="info" size={'3rem'} />
+			</Box>
+		);
 
 	if (errorState) {
 		return <FallbackError error={errorState} />;
