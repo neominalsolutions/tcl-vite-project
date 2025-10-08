@@ -9,6 +9,8 @@ import ErrorBoundryPage from './pages/error.tsx';
 import NotFoundPage from './pages/not-found.tsx';
 import UsersLoaderPage from './pages/users-loader/page.tsx';
 import { userClientService } from './services/users/user.client.ts';
+import { Provider } from 'react-redux'; // store daki stateleri uygulama genelinde yöneten servis
+import { store } from './contexts/store.ts'; // provider store ile çalışsın
 
 // tembel sayfa yüklemesi arkadan yükleme
 // nbu sayede uygulamanın ilk açışı hızlanır.
@@ -63,5 +65,9 @@ const router = createBrowserRouter([
 // Not: Render süreci ile React Componentler doma yansır.
 // Uygulamanın başlangıç noktasıdır.
 createRoot(document.getElementById('root')!).render(
-	<RouterProvider router={router} />
+	<Provider store={store}>
+		<RouterProvider router={router} />
+	</Provider>
 );
+
+// 2. aşama Provider tanımı
