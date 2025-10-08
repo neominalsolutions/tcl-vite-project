@@ -77,9 +77,9 @@ function MainLayout() {
 									<Button color="inherit">
 										<Link
 											style={{ textDecoration: 'none', color: 'white' }}
-											to="/users"
+											to="/users-loader"
 										>
-											Users NavLink
+											Users Loader
 										</Link>{' '}
 									</Button>
 								</Box>

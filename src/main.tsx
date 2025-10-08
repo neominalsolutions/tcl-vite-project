@@ -7,6 +7,8 @@ import '@fontsource/roboto/400.css';
 import { lazy } from 'react';
 import ErrorBoundryPage from './pages/error.tsx';
 import NotFoundPage from './pages/not-found.tsx';
+import UsersLoaderPage from './pages/users-loader/page.tsx';
+import { userClientService } from './services/users/user.client.ts';
 
 // tembel sayfa yüklemesi arkadan yükleme
 // nbu sayede uygulamanın ilk açışı hızlanır.
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
 				path: 'users',
 
 				Component: UsersPage,
+			},
+			{
+				path: 'users-loader',
+				loader: async () => {
+					// sayfa açılmadan önce gidip arka planda veri çekme işlemi başlatıyor
+					return await userClientService.getUsers(); // veri yüklenince sayfaya veriyi useLoaderData hook ile veriyor, bu sayede eğer bu servis hata varsa bu errorBoundary ilgisi haline geliyor.
+				},
+				Component: UsersLoaderPage,
 				ErrorBoundary: ErrorBoundryPage,
 			},
 			{
