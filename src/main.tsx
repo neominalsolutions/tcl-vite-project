@@ -5,6 +5,8 @@ import '@fontsource/roboto/400.css';
 // import AboutPage from './pages/about/page.tsx';
 // import HomePage from './pages/home/page.tsx';
 import { lazy } from 'react';
+import ErrorBoundryPage from './pages/error.tsx';
+import NotFoundPage from './pages/not-found.tsx';
 
 // tembel sayfa yüklemesi arkadan yükleme
 // nbu sayede uygulamanın ilk açışı hızlanır.
@@ -18,11 +20,24 @@ const router = createBrowserRouter([
 		path: '/',
 		Component: MainLayout,
 		children: [
-			{ index: true, Component: HomePage },
-			{ path: 'about', Component: AboutPage },
-			{ path: 'users', Component: UsersPage },
-			{ path: 'users/:id', Component: UserDetailPage },
+			{ index: true, Component: HomePage, ErrorBoundary: ErrorBoundryPage },
+			{ path: 'about', Component: AboutPage, ErrorBoundary: ErrorBoundryPage },
+			{
+				path: 'users',
+
+				Component: UsersPage,
+				ErrorBoundary: ErrorBoundryPage,
+			},
+			{
+				path: 'users/:id',
+				Component: UserDetailPage,
+				ErrorBoundary: ErrorBoundryPage,
+			},
 		],
+	},
+	{
+		path: '*', // herhangi bir sayfa route tanımlanmadığında hata sayfasını göster, en altta olucak.
+		Component: NotFoundPage,
 	},
 ]);
 

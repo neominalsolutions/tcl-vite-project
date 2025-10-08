@@ -13,6 +13,11 @@ export interface User {
 // componenten buradaki export edilen getUsers fonksiyonu çağrılır.
 const getUsers = async () => {
 	console.log('User Client Service: Getting users...');
+
+	// ya böyle bir server hatası alıcaz
+	// return Promise.reject({ message: 'Internal Server Error' });
+
+	// yada path yanlış olucak 404 gibi bir hata alıcaz.
 	return axiosClientService.get(
 		'/users',
 		{ headers: { Authorization: 'Bearer xtuyuyuad.asdsad.asdsadsad' } },
