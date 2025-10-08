@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import {
 	Box,
 	Button,
@@ -16,10 +20,43 @@ function LoginDialog({
 	open: boolean;
 	handleClose(): void;
 }) {
-	const onFormSubmit = () => {
-		console.log('form Submit');
+	const loginSchema = yup
+		.object({
+			email: yup
+				.string()
+				.email('E-posta formatında giriniz')
+				.required('E-Posta boş geçilemez'),
+			password: yup
+				.string()
+				.min(8, 'Min 8 Karakter')
+				.max(12, 'Max 12 karakter')
+				.required('Parola boş geçilemez'),
+		})
+		.required();
+
+	const {
+		handleSubmit, // form submit function
+		formState: { errors }, // -> form güncel state takibi için
+		control, // -> form elementleri UI kütüphaneler ile çalışırken
+	} = useForm({
+		defaultValues: {
+			// -> form ilk değerleri
+			email: '',
+			password: '',
+		},
+		resolver: yupResolver(loginSchema), // login şemasını forma uygula
+	});
+
+	const onFormSubmit = (data: any) => {
+		// form submit edildikten sonraki form bilgileri
+		console.log(data);
 		handleClose();
 	};
+
+	console.log('...rending');
+
+	// Not: Hook Forms UI kütüphaneleri ile çalışrıken TextInput gibi UI kütüphanelerine ait form elementlerinin state değişikliklerini algılamak için kullanılan bir wrapper component: (Controller)
+    // Not: Formu submit edene kadar inputdaki her değişim için render.
 
 	return (
 		<Dialog
@@ -31,29 +68,47 @@ function LoginDialog({
 			<DialogTitle id="alert-dialog-title">{'Login Formu'}</DialogTitle>
 			<DialogContent>
 				<Box component="form" autoComplete="off">
-					<TextField
-						sx={{ minWidth: '100%' }}
-						id="filled-textarea"
-						label="Please type email"
-						placeholder="Email"
-						multiline
-						variant="filled"
-						helperText="Hata 1"
+					<Controller
+						name="email"
+						control={control}
+						render={({ field }) => (
+							<TextField
+								{...field}
+								name="email"
+								sx={{ minWidth: '100%' }}
+								id="filled-textarea"
+								label="Please type email"
+								placeholder="Email"
+								multiline
+								variant="filled"
+								helperText={errors.email?.message}
+							/>
+						)}
 					/>
+
 					<Divider />
-					<TextField
-						sx={{ minWidth: '100%' }}
-						id="filled-textarea"
-						label="Please type password"
-						placeholder="Password"
-						multiline
-						variant="filled"
-						helperText="Hata 2"
+
+					<Controller
+						name="password"
+						control={control}
+						render={({ field }) => (
+							<TextField
+								{...field}
+								name="password"
+								sx={{ minWidth: '100%' }}
+								id="filled-textarea"
+								label="Please type password"
+								placeholder="Password"
+								multiline
+								variant="filled"
+								helperText={errors.password?.message}
+							/>
+						)}
 					/>
 				</Box>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onFormSubmit} autoFocus>
+				<Button onClick={handleSubmit(onFormSubmit)} autoFocus>
 					Oturum Aç
 				</Button>
 			</DialogActions>
